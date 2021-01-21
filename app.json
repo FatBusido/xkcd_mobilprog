@@ -1,0 +1,12 @@
+{
+  "name": "Xkcd",
+  "displayName": "Xkcd",
+  "expo": {
+    "name": "Xkcd",
+    "slug": "Xkcd",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
