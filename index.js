@@ -1,23 +1,16 @@
-/**<>
- * @format
- */
+import React from 'react';
+import { registerRootComponent } from 'expo';
 
-import {AppRegistry, SafeAreaView, StatusBar} from 'react-native';
+import {AppRegistry, SafeAreaView} from 'react-native';
 import App from './App';
-import {name as appName} from './app.json';
-import randomComic from './xkcdAPI/.xkcd_Random.js';
+//import {name as appName} from './app.json';
 
-const App=()=>(
-    <SafeAreaView>
-        <StatusBar barStyle="auto"/>;
-        <randomComic></randomComic>;
-        
+// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
+// It also ensures that whether you load the app in the Expo client or in a native build,
+// the environment is set up appropriately
 
-    </SafeAreaView>
-)
+const Comp = () => (
+    <App />
+);
 
-
-
-
-
-AppRegistry.registerComponent(appName, () => App);
+registerRootComponent(Comp);

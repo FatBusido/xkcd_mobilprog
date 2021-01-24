@@ -1,60 +1,50 @@
 import React, {useState, useEffect} from 'react';
-import {View,Text, Image, Button} from 'react-native';
+import {View, Text, TextInput, Image, Button} from 'react-native';
 import axios from 'axios';
 
-function app(){
-    const [comic,setComic] = useState(null);
-    useEffect(() =>{//Nem renderel minden kérésnél
-        const promise=axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com/info.0.json');
-        promise.then(Response =>setComic(Response.data))
+function XkcdRandom(){
+    const [comic,setComic] = useState({});
+    const [szam,setSzam] = useState(2);
+    const [fav,setFav] = useState(3);
+    
+    useEffect(() =>{
+        axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com//info.0.json')
+        .then(Response => setComic(Response.data))
         .catch(error => console.log('error',error))
         console.log('end of useEffect');
-
     },[]);
-    const NumberComic=(number)=> {//Megadott számú comic lekérése
-        axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com/$(number)/info.0.json')
+
+    const NumberComic=()=> {
+        axios.get(`https://cors-anywhere.herokuapp.com/http://xkcd.com/${szam}/info.0.json`)
         .then(Response=>setComic(Response.data))
         .catch(error=>console.log('error',error));
     }
-    const RandomComic=()=> {//Random comics
-    const min = 1;
-    const max = 2400;
-    const rand = min + Math.random() * (max - min);
-      axios.get('https://cors-anywhere.herokuapp.com/http://xkcd.com/$(rand)/info.0.json')
+    const RandomComic=()=> {
+    var randomNumber = Math.floor(Math.random() * 2400) + 1;
+     axios. get(`https://cors-anywhere.herokuapp.com/http://xkcd.com/${randomNumber}/info.0.json`)
       .then(Response=>setComic(Response.data))
       .catch(error=>console.log('error',error));
   }
-}
-if(!comic){
-    return<div>"error..."</div>
-}
 
 
-//Favorithoz adás----
-const [comicNum, comicTittle]  = useState([
-    { id : "0", tittle : "Teszt"},
-  ]);
-const addElement = () => {
-    var newArray = [...comicNum , {id : comic.number, tittle: comic.tittle + (idx+1) }];
-    incr(idx + 1);
-    setExampleState(newArray);
-    comicTittle(newArray);
+  if(!comic){
+    return(<div>"error..."</div>)
   }
-//Favorithoz adás vége---
-return{ //<>
-    <Text comic.tittle  />;
-    <Image
-    style={styles.tinyLogo}
-    source={{ comic.Image
-    }}
-  />
-  <button tittle="SetFavorite" onPress={addElement}/> 
-  <button tittle="RandomComic" onPress={RandomComic}/> 
-  <TextField id="standard-basic" label="Number" />
-  <button tittle="SetFavorite" onPress={NumberComic()}/>
 
+  return(<>
+    <View style={{ flexDirection: "row" }}>
+    <button onClick={RandomComic}>RandomComic</button>
+    <TextInput label="Number" type="number" onChangeText={(num) => setSzam(parseInt(num) || 0)} />
+    <button onClick={NumberComic}>SpecificComic</button>
+    </View>
+    <View>
+    <Text style= {{textAlign: "center",margin:10}}>{comic.title}</Text>
+    <Image source={comic.img } style = {{height: 300, resizeMode : 'center', margin: 5 }} />
+    <Text style= {{textAlign: "center",margin:10}}>{comic.alt}</Text>
+    </View>
+    
+    </>
+  )
+}
 
-
-};
-
-export default app;
+export default XkcdRandom;
